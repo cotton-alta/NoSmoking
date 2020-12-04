@@ -20,7 +20,7 @@ const Top = ({ navigation }) => {
         style={styles.header_wrapper}
         onPress={() => navigation.navigate("HOME")}
       >
-        <Text style={styles.header_text}>ADD</Text>
+        <Text style={styles.header_text}>HOME</Text>
       </TouchableOpacity>
     );
   };
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "gray",
     borderBottomWidth: 2,
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
+    // alignItems: "flex-end"
+    justifyContent: "flex-end"
   },
   header_text: {
     width: "20%",
