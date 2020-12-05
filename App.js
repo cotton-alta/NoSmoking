@@ -9,6 +9,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Top } from "./pages/Top";
+import { Graph } from "./pages/Graph";
+import { Config } from "./pages/Config";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,14 +40,30 @@ const TabNavigator = () => {
       <Tab.Screen
         name="HOME"
         component={ Top }
-        options={TabConfig}
+        options={HomeConfig}
+      />
+      <Tab.Screen
+        name="GRAPH"
+        component={ Graph }
+        options={GraphConfig}
+      />
+      <Tab.Screen
+        name="CONFIG"
+        component={ Config }
+        options={ConfigConfig}
       />
     </Tab.Navigator>
   );
 };
 
-const TabConfig = {
+const HomeConfig = {
+  tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
+};
+const GraphConfig = {
   tabBarIcon: () => <AntDesign name="areachart" size={24} color="black" />,
+};
+const ConfigConfig = {
+  tabBarIcon: () => <AntDesign name="setting" size={24} color="black" />,
 };
 
 export default function App() {

@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
-const Top = ({ navigation }) => {
+const Graph = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
 
@@ -20,7 +20,7 @@ const Top = ({ navigation }) => {
         style={styles.header_wrapper}
         onPress={() => navigation.navigate("HOME")}
       >
-        <Text style={styles.header_text}>Home</Text>
+        <Text style={styles.header_text}>Graph</Text>
       </TouchableOpacity>
     );
   };
@@ -29,29 +29,13 @@ const Top = ({ navigation }) => {
     <View style={styles.container}>
       <Header />
       <ScrollView style={styles.scroll_container}>
-        <Text style={styles.top_text}>今日の本数</Text>
-        <View style={styles.count_wrapper}>
-          <View style={styles.count_down}>
-            <Image
-              source={require("../assets/icon.png")}
-              style={styles.count_img}
-            />
-          </View>
-          <View style={styles.count_box}></View>
-          <View style={styles.count_up}>
-            <Image
-              source={require("../assets/icon.png")}
-              style={styles.count_img}
-            />
-          </View>
-        </View>
       </ScrollView>
     </View>
   );
 }
 
 export {
-  Top
+  Graph
 }
 
 const styles = StyleSheet.create({
@@ -80,43 +64,6 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 20,
     textAlign: "center",
-  },
-  top_text: {
-    width: "100%",
-    height: 100,
-    lineHeight: 100,
-    fontSize: 25,
-    textAlign: "center"
-  },
-  count_wrapper: {
-    width: "100%",
-    height: 200,
-    flexDirection: "row"
-  },
-  count_box: {
-    width: "60%",
-    height: 200,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 10
-  },
-  count_down: {
-    width: "20%",
-    height: 200,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: 'center',
-  },
-  count_up: {
-    width: "20%",
-    height: 200,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: 'center',
-  },
-  count_img: {
-    width: 50,
-    height: 50,
   },
   task_wrapper: {
     width: "100%",
