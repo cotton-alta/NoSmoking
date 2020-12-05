@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 
+import { AntDesign } from '@expo/vector-icons';
+
 import React, { useReducer, useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,14 +15,6 @@ const Tab = createBottomTabNavigator();
 
 const CigarettesNumContext = React.createContext(null);
 
-const TabNavigator = () => {
-  return (
-    <Tab.Navigator initialRouteName="HOME">
-      <Tab.Screen name="HOME" component={ Top } />
-    </Tab.Navigator>
-  );
-};
-
 const StackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="TabNavigator">
@@ -31,6 +25,27 @@ const StackNavigator = () => {
       />
     </Stack.Navigator>
   )
+};
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="HOME"
+//       tabBarOptions={() => ({
+//         showLabel: false
+//       })}
+    >
+      <Tab.Screen
+        name="HOME"
+        component={ Top }
+        options={TabConfig}
+      />
+    </Tab.Navigator>
+  );
+};
+
+const TabConfig = {
+  tabBarIcon: () => <AntDesign name="areachart" size={24} color="black" />,
 };
 
 export default function App() {
