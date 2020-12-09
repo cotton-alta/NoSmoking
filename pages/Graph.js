@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, Image, TextInput, StyleSheet, Text, View, Button, TouchableOpacity, Keyboard } from 'react-native';
+import { ScrollView, Image, TextInput, StyleSheet, Text, View, Button, TouchableOpacity, Keyboard, Picker } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
+import { LineChart } from "react-native-chart-kit";
 
 const Graph = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
@@ -13,6 +14,10 @@ const Graph = ({ navigation }) => {
   const getData = async () => {};
 
   const deleteTask = async (id) => {};
+
+  const clicks = () => {
+
+  };
 
   const Header = () => {
     return (
@@ -28,7 +33,53 @@ const Graph = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
-      <ScrollView style={styles.scroll_container}>
+      <ScrollView
+        contentContainerStyle={styles.scroll_container}
+      >
+        <View style={styles.button_wrapper}>
+          <View
+            style={styles.button_day}
+            onClick={clicks}
+          >
+            <Text style={styles.button_text}>day</Text>
+          </View>
+          <View
+            style={styles.button_month}
+            onClick={clicks}
+          >
+            <Text style={styles.button_text}>month</Text>
+          </View>
+          <View
+            style={styles.button_year}
+            onClick={clicks}
+          >
+            <Text style={styles.button_text}>year</Text>
+          </View>
+        </View>
+        <Picker>
+          <Picker.Item label="2020/12/09" value="2020/12/09" />
+          <Picker.Item label="2020/12/10" value="2020/12/10" />
+          <Picker.Item label="2020/12/11" value="2020/12/11" />
+        </Picker>
+        <View style={styles.graph_wrapper}>
+          <LineChart
+            data={{
+              labels: ["1", "2", "3"],
+                datasets: [{
+                  data: [1, 4, 3]
+                }]
+            }}
+            width={300}
+            height={300}
+            yAxisLabel={"本"}
+            chartConfig={{
+              backgroundColor: "#FFF",
+              backgroundGradientFrom: "#FFF",
+              backgroundGradientTo: "#FFF",
+              color: (opacity = 0.5) => `rgba(0, 0, 0, 0.5)`,
+            }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -49,11 +100,16 @@ const styles = StyleSheet.create({
   },
   scroll_container: {
     width: "90%",
+    justifyContent: "center"
+  },
+  scroll_wrapper: {
+    width: 300,
+    height: 300
   },
   header_wrapper: {
     width: "100%",
     height: 100,
-    borderBottomColor: "gray",
+    borderBottomColor: "#ededed",
     borderBottomWidth: 1,
     // alignItems: "flex-end"
     justifyContent: "flex-end"
@@ -64,6 +120,39 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 20,
     textAlign: "center",
+  },
+  button_wrapper: {
+    flexDirection: "row"
+  },
+  button_day: {
+    width: 100,
+    height: 40,
+    borderBottomLeftRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "gray",
+  },
+  button_month: {
+    width: 100,
+    height: 40,
+    borderRightWidth: 2,
+    borderRightColor: "#FFF",
+    borderLeftWidth: 2,
+    borderLeftColor: "#FFF",
+    backgroundColor: "gray"
+  },
+  button_year: {
+    width: 100,
+    height: 40,
+    borderBottomRightRadius: 15,
+    borderTopRightRadius: 15,
+    backgroundColor: "gray"
+  },
+  button_text: {
+    width: 100,
+    height: 40,
+    lineHeight: 40,
+    textAlign: "center",
+    color: "#FFF"
   },
   task_wrapper: {
     width: "100%",
