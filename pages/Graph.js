@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, Image, TextInput, StyleSheet, Text, View, Button, TouchableOpacity, Keyboard, Picker } from 'react-native';
+import { ScrollView, Image, TextInput, StyleSheet, Text, View, Button, TouchableOpacity, Keyboard } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 import { LineChart } from "react-native-chart-kit";
+import RNPickerSelect from "react-native-picker-select";
 
 const Graph = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
@@ -56,11 +57,18 @@ const Graph = ({ navigation }) => {
             <Text style={styles.button_text}>year</Text>
           </View>
         </View>
-        <Picker>
-          <Picker.Item label="2020/12/09" value="2020/12/09" />
-          <Picker.Item label="2020/12/10" value="2020/12/10" />
-          <Picker.Item label="2020/12/11" value="2020/12/11" />
-        </Picker>
+        <View style={styles.picker_wrapper}>
+          <RNPickerSelect
+            placeholder={{ label: "日付を選択", value: "" }}
+            onValueChange={clicks}
+            style={picker_style}
+            items={[
+              { label: "2020/12/07", value: "2020/12/07" },
+              { label: "2020/12/08", value: "2020/12/08" },
+              { label: "2020/12/09", value: "2020/12/09" },
+            ]}
+          />
+        </View>
         <View style={styles.graph_wrapper}>
           <LineChart
             data={{
@@ -89,6 +97,17 @@ export {
   Graph
 }
 
+const picker_style = StyleSheet.create({
+  inputIOS: {
+    width: 200,
+    height: 45,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 10,
+    paddingHorizontal: 10
+  },
+});
+
 const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -111,7 +130,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ededed",
     borderBottomWidth: 1,
-    // alignItems: "flex-end"
     justifyContent: "flex-end"
   },
   header_text: {
@@ -122,7 +140,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button_wrapper: {
-    flexDirection: "row"
+    flexDirection: "row",
+    paddingTop: 10
   },
   button_day: {
     width: 100,
@@ -154,17 +173,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFF"
   },
-  task_wrapper: {
-    width: "100%",
-    height: 60,
-    borderBottomColor: "gray",
-    borderBottomWidth: 2,
+  picker_wrapper: {
+    height: 45,
     flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  task_text: {
-    fontSize: 20,
-    lineHeight: 60,
+    justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 10
   },
   check_wrapper: {
     height: 58,
