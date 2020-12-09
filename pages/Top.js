@@ -7,6 +7,7 @@ import { CigarettesNumContext } from "../App";
 const Top = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
+  const [state, setState] = useState(0);
 
   useEffect(() => {}, []);
 
@@ -25,25 +26,47 @@ const Top = ({ navigation }) => {
     );
   };
 
+  const Count = () => {
+    return (
+      <Text style={styles.count_text}>{state}</Text>
+    );
+  };
+
+  const countUp = () => {
+    setState(state + 1);
+  };
+
+  const countDown = () => {
+    setState(state - 1);
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView style={styles.scroll_container}>
         <Text style={styles.top_text}>今日の本数</Text>
         <View style={styles.count_wrapper}>
-          <View style={styles.count_down}>
+          <TouchableOpacity
+            style={styles.count_down}
+            onPress={countDown}
+          >
             <Image
-              source={require("../assets/icon.png")}
+              source={require("../assets/left.png")}
               style={styles.count_img}
             />
+          </TouchableOpacity>
+          <View style={styles.count_box}>
+            <Count />
           </View>
-          <View style={styles.count_box}></View>
-          <View style={styles.count_up}>
+          <TouchableOpacity
+            style={styles.count_up}
+            onPress={countUp}
+          >
             <Image
-              source={require("../assets/icon.png")}
+              source={require("../assets/right.png")}
               style={styles.count_img}
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -69,7 +92,7 @@ const styles = StyleSheet.create({
   header_wrapper: {
     width: "100%",
     height: 100,
-    borderBottomColor: "gray",
+    borderBottomColor: "#ededed",
     borderBottomWidth: 1,
     // alignItems: "flex-end"
     justifyContent: "flex-end"
@@ -99,6 +122,13 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10
+  },
+  count_text: {
+    height: "100%",
+    width: "100%",
+    lineHeight: 200,
+    fontSize: 70,
+    textAlign: "center"
   },
   count_down: {
     width: "20%",
