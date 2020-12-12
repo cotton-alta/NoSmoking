@@ -4,13 +4,21 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
+import { getTable } from "../api/daily";
 
 const Top = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
   const [state, setState] = useState(0);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const dbProcess = async () => {
+      const table = await getTable();
+      console.log(table);
+    };
+
+    dbProcess();
+  }, []);
 
   const getData = async () => {};
 

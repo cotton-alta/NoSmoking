@@ -12,19 +12,7 @@ import { Top } from "./pages/Top";
 import { Graph } from "./pages/Graph";
 import { Config } from "./pages/Config";
 
-import * as SQLite from "expo-sqlite";
-
-// DBに関する処理
-const db = SQLite.openDatabase("db");
-
-db.transaction(tx => {
-  tx.executeSql(
-    "create table if not exists daily (id integer primary key not null, date date, count number)",
-    null,
-    () => {console.log("success")},
-    () => {console.log("fail")}
-  )
-});
+import { createTable, insertColumn } from "./api/daily";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -84,6 +72,8 @@ export default function App() {
   // const [state, dispatch] = useReducer(action, []);
   // const value = { state, dispatch };
 
+  createTable();
+  insertColumn();
 
   return (
     // <TaskContext.Provider value={value}>
