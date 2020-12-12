@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
+
 const Top = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
@@ -12,8 +13,6 @@ const Top = ({ navigation }) => {
   useEffect(() => {}, []);
 
   const getData = async () => {};
-
-  const deleteTask = async (id) => {};
 
   const Header = () => {
     return (
@@ -37,7 +36,9 @@ const Top = ({ navigation }) => {
   };
 
   const countDown = () => {
-    setState(state - 1);
+    if(Number(state) > 0) {
+      setState(state - 1);
+    }
   };
 
   return (

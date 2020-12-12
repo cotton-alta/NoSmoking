@@ -12,6 +12,20 @@ import { Top } from "./pages/Top";
 import { Graph } from "./pages/Graph";
 import { Config } from "./pages/Config";
 
+import * as SQLite from "expo-sqlite";
+
+// DBに関する処理
+const db = SQLite.openDatabase("db");
+
+db.transaction(tx => {
+  tx.executeSql(
+    "create table if not exists daily (id integer primary key not null, date date, count number)",
+    null,
+    () => {console.log("success")},
+    () => {console.log("fail")}
+  )
+});
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -69,6 +83,7 @@ const ConfigConfig = {
 export default function App() {
   // const [state, dispatch] = useReducer(action, []);
   // const value = { state, dispatch };
+
 
   return (
     // <TaskContext.Provider value={value}>
