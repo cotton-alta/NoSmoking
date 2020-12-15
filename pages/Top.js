@@ -4,17 +4,26 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
-import { getTable } from "../api/daily";
+import { getTable, getColumn, deleteTable, createTable, insertColumn } from "../api/daily";
 
 const Top = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
-  const [state, setState] = useState(0);
+  const [numCigarettes, setNumCigarettes] = useState(0);
+  const [viewType, setViewType] = useState("day");
 
   useEffect(() => {
+    deleteTable();
+    createTable();
+    insertColumn();
+
     const dbProcess = async () => {
+
       const table = await getTable();
       console.log(table);
+
+      const test_array = await getColumn("2020-11-10", "month");
+      console.log(test_array);
     };
 
     dbProcess();
@@ -35,17 +44,17 @@ const Top = ({ navigation }) => {
 
   const Count = () => {
     return (
-      <Text style={styles.count_text}>{state}</Text>
+      <Text style={styles.count_text}>{numCigarettes}</Text>
     );
   };
 
   const countUp = () => {
-    setState(state + 1);
+    setNumCigarettes(numCigarettes + 1);
   };
 
   const countDown = () => {
-    if(Number(state) > 0) {
-      setState(state - 1);
+    if(Number(numCigarettes) > 0) {
+      setNumCigarettes(numCigarettes - 1);
     }
   };
 

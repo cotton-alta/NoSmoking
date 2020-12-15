@@ -12,8 +12,6 @@ import { Top } from "./pages/Top";
 import { Graph } from "./pages/Graph";
 import { Config } from "./pages/Config";
 
-import { createTable, insertColumn } from "./api/daily";
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -71,9 +69,6 @@ const ConfigConfig = {
 export default function App() {
   // const [state, dispatch] = useReducer(action, []);
   // const value = { state, dispatch };
-
-  createTable();
-  insertColumn();
 
   return (
     // <TaskContext.Provider value={value}>
