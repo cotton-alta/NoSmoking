@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
-import { getTable, getColumn, deleteTable, createTable, insertColumn } from "../api/daily";
+import { getDailyColumn } from "../api/daily";
 
 const Top = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
@@ -12,18 +12,23 @@ const Top = ({ navigation }) => {
   const [numCigarettes, setNumCigarettes] = useState(0);
   const [viewType, setViewType] = useState("day");
 
+
   useEffect(() => {
-    deleteTable();
-    createTable();
-    insertColumn();
+    let current = new Date();
+    let year = current.getFullYear();
+    let month = current.getMonth() + 1;
+    let day = current.getDate();
+    current = year + "-" + month + "-" + day;
 
     const dbProcess = async () => {
-
-      const table = await getTable();
-      console.log(table);
-
-      const test_array = await getColumn("2020-11-10", "month");
-      console.log(test_array);
+      let result;
+      while(1) {
+        const data = await getDailyColumn(current, "day");
+        result = data;
+        console.log("hello");
+        if(data.length != 0) break;
+      }
+      setNumCigarettes(result[0]);
     };
 
     dbProcess();

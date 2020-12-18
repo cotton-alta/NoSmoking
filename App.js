@@ -12,6 +12,14 @@ import { Top } from "./pages/Top";
 import { Graph } from "./pages/Graph";
 import { Config } from "./pages/Config";
 
+import {
+  createDailyTable,
+  deleteDailyTable,
+  getDailyTable,
+  insertDailyColumn,
+  getDailyColumn
+} from "./api/daily";
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -69,6 +77,44 @@ const ConfigConfig = {
 export default function App() {
   // const [state, dispatch] = useReducer(action, []);
   // const value = { state, dispatch };
+
+  let current_date = new Date();
+  let year = current_date.getFullYear();
+  let month = current_date.getMonth() + 1;
+  let day = current_date.getDate();
+  current_date = year + "-" + month + "-" + day;
+
+  const checkDateInit = async () => {
+    const date = await getDailyColumn(current_date, "day");
+
+    if(date.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const dbProcess = async () => {
+    await deleteDailyTable();
+    await createDailyTable();
+    let date_exist = await checkDateInit();
+
+    if(date_exist == true) {
+      await insertDailyColumn(current_date);
+    }
+  };
+  dbProcess();
+
+ //  const dbProcess = async () => {
+
+ //    const table = await getDailyTable();
+ //    console.log(table);
+
+ //    const test_array = await getDailyColumn("2020-11-10", "day");
+ //    console.log(test_array);
+ //  };
+
+  // dbProcess();
 
   return (
     // <TaskContext.Provider value={value}>

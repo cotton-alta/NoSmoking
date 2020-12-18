@@ -3,30 +3,43 @@ import * as SQLite from "expo-sqlite";
 // DBに関する処理
 const db = SQLite.openDatabase("db");
 
-const createTable = () => {
-  db.transaction(tx => {
-    tx.executeSql(
-      "create table if not exists daily (id integer primary key not null, date text, count number)",
-      null,
-      () => {console.log("success")},
-      () => {console.log("fail")}
-    )
+const createDailyTable = () => {
+  const result = new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists daily (id integer primary key not null, date text, count number)",
+        null,
+        () => {
+          console.log("table create success")
+          resolve(true);
+        },
+        () => {console.log("fail")}
+      )
+    });
   });
+  return result;
 };
 
-const insertColumn = () => {
+const insertDailyColumn = (date) => {
   let test = ["2020-12-10", 3];
-  db.transaction(tx => {
-    tx.executeSql(
-      `insert into daily (date, count) values (?, ?)`,
-      [test[0], test[1]],
-      () => {console.log("success insert");},
-      () => {console.log("fail insert");}
-    )
+
+  const result = new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `insert into daily (date, count) values (?, ?)`,
+        [date, 5],
+        () => {
+          console.log("success insert");
+          resolve(true);
+        },
+        () => {console.log("fail insert");}
+      )
+    });
   });
+  return result;
 };
 
-const getTable = () => {
+const getDailyTable = () => {
   const array = new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -43,11 +56,19 @@ const getTable = () => {
   return array;
 };
 
-// 第2引数: year, month, date
-const getColumn = (data, type) => {
+// 第2引数: year, month, day
+const getDailyColumn = (data, type) => {
   // test用
-  let start_date = "2020-12-01";
-  let end_date = "2020-12-20";
+  // let start_date = "2020-12-01";
+  // let end_date = "2020-12-20";
+
+  let start_date;
+  let end_date;
+
+  if(type == "day") {
+    start_date = data;
+    end_date = data;
+  }
 
   const array = new Promise((resolve, reject) => {
     db.transaction(tx => {
@@ -57,6 +78,7 @@ const getColumn = (data, type) => {
         (_, {rows}) => {
           const rows_len = [...Array(rows.length).keys()];
           const rows_array = rows_len.map(i => rows.item(i));
+          console.log("get column success");
           resolve(rows_array);
         },
         () => {console.log("get column fail");}
@@ -66,21 +88,27 @@ const getColumn = (data, type) => {
   return array;
 };
 
-const deleteTable = () => {
-  db.transaction(tx => {
-    tx.executeSql(
-      "drop table daily",
-      null,
-      () => {console.log("delete success")},
-      () => {console.log("delete fail")}
-    )
+const deleteDailyTable = () => {
+  const result = new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "drop table daily",
+        null,
+        () => {
+          console.log("delete success")
+          resolve(true);
+        },
+        () => {console.log("delete fail")}
+      )
+    });
   });
+  return result;
 };
 
 export {
-  createTable,
-  insertColumn,
-  getTable,
-  getColumn,
-  deleteTable
+  createDailyTable,
+  insertDailyColumn,
+  getDailyTable,
+  getDailyColumn,
+  deleteDailyTable
 }
