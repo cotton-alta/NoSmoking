@@ -4,34 +4,61 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
 
-import { getDailyColumn } from "../api/daily";
+import {
+  createDailyTable,
+  deleteDailyTable,
+  getDailyTable,
+  insertDailyColumn,
+  updateDailyColumn,
+  getDailyColumn
+} from "../api/daily";
+
+import { DBLoadContext } from "../App";
 
 const Top = ({ navigation }) => {
-  const [tasks, setTasks] = useState([]);
-  // const { state, dispatch } = useContext(CigarettesNumContext);
+  const { DBLoad, DBLoadDispatch } = useContext(DBLoadContext);
   const [numCigarettes, setNumCigarettes] = useState(0);
   const [viewType, setViewType] = useState("day");
-
+  const [currentDate, setCurrentDate] = useState("2020-01-01");
 
   useEffect(() => {
-    let current = new Date();
-    let year = current.getFullYear();
-    let month = current.getMonth() + 1;
-    let day = current.getDate();
-    current = year + "-" + month + "-" + day;
+    let current_date = new Date();
+    let year = current_date.getFullYear();
+    let month = current_date.getMonth() + 1;
+    let day = current_date.getDate();
+    current_date = year + "-" + month + "-" + day;
+    setCurrentDate(current_date);
 
-    const dbProcess = async () => {
-      let result;
-      while(1) {
-        const data = await getDailyColumn(current, "day");
-        result = data;
-        console.log("hello");
-        if(data.length != 0) break;
+    const checkDateInit = async () => {
+      const date = await getDailyColumn(current_date, "day");
+
+      console.log(date.length);
+      if(date.length == 0) {
+        return true;
+      } else {
+        return false;
       }
-      setNumCigarettes(result[0]);
     };
 
-    dbProcess();
+    const dbInit = async () => {
+      // await deleteDailyTable();
+      await createDailyTable();
+      let date_exist = await checkDateInit();
+
+      if(date_exist == true) {
+        await insertDailyColumn(current_date);
+      }
+      DBLoadDispatch({
+        type: "checkLoad",
+        payload: true
+      });
+
+      const data = await getDailyColumn(current_date, "day");
+      console.log(currentDate);
+      setNumCigarettes(data[0].count);
+    };
+    dbInit();
+
   }, []);
 
   const getData = async () => {};
@@ -55,6 +82,7 @@ const Top = ({ navigation }) => {
 
   const countUp = () => {
     setNumCigarettes(numCigarettes + 1);
+    updateDailyColumn(currentDate, numCigarettes);
   };
 
   const countDown = () => {

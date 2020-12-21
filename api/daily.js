@@ -39,6 +39,23 @@ const insertDailyColumn = (date) => {
   return result;
 };
 
+const updateDailyColumn = (date, count) => {
+  const result = new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `update daily set count = ? where date = ?`,
+        [count, date],
+        () => {
+          console.log("success update");
+          resolve(true);
+        },
+        () => {console.log("fail update");}
+      )
+    });
+  });
+  return result;
+};
+
 const getDailyTable = () => {
   const array = new Promise((resolve, reject) => {
     db.transaction(tx => {
@@ -108,6 +125,7 @@ const deleteDailyTable = () => {
 export {
   createDailyTable,
   insertDailyColumn,
+  updateDailyColumn,
   getDailyTable,
   getDailyColumn,
   deleteDailyTable
