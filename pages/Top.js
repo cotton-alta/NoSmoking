@@ -82,12 +82,13 @@ const Top = ({ navigation }) => {
 
   const countUp = () => {
     setNumCigarettes(numCigarettes + 1);
-    updateDailyColumn(currentDate, numCigarettes);
+    updateDailyColumn(currentDate, numCigarettes + 1);
   };
 
   const countDown = () => {
     if(Number(numCigarettes) > 0) {
       setNumCigarettes(numCigarettes - 1);
+      updateDailyColumn(currentDate, numCigarettes - 1);
     }
   };
 
