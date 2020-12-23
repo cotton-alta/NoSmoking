@@ -13,6 +13,7 @@ const Graph = ({ navigation }) => {
   const [currentDate, setCurrentDate] = useState("2020-01-01");
   const [viewLabel, setViewLabel] = useState([]);
   const [viewItem, setViewItem] = useState([]);
+  const [viewType, setViewType] = useState("month");
 
   useEffect(() => {
     let current_date = new Date();
@@ -39,8 +40,12 @@ const Graph = ({ navigation }) => {
 
   const deleteTask = async (id) => {};
 
-  const clicks = () => {
+  const changePeriod = () => {
 
+  };
+
+  const changeType = (type) => {
+    setViewType(type);
   };
 
   const Header = () => {
@@ -54,6 +59,14 @@ const Graph = ({ navigation }) => {
     );
   };
 
+  const buttonColor = (type) => {
+    if(viewType == type) {
+      return { backgroundColor: "#C6E8E7" };
+    } else {
+      return { backgroundColor: "#90CECC" };
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header />
@@ -62,20 +75,29 @@ const Graph = ({ navigation }) => {
       >
         <View style={styles.button_wrapper}>
           <View
-            style={styles.button_day}
-            onClick={clicks}
+            style={[
+              styles.button_day,
+              buttonColor("day")
+            ]}
+            onClick={() => changeType("day")}
           >
             <Text style={styles.button_text}>day</Text>
           </View>
           <View
-            style={styles.button_month}
-            onClick={clicks}
+            style={[
+              styles.button_month,
+              buttonColor("month")
+            ]}
+            onClick={() => changeType("month")}
           >
             <Text style={styles.button_text}>month</Text>
           </View>
           <View
-            style={styles.button_year}
-            onClick={clicks}
+            style={[
+              styles.button_year,
+              buttonColor("year")
+            ]}
+            onClick={() => changeType("year")}
           >
             <Text style={styles.button_text}>year</Text>
           </View>
@@ -83,7 +105,7 @@ const Graph = ({ navigation }) => {
         <View style={styles.picker_wrapper}>
           <RNPickerSelect
             placeholder={{ label: "日付を選択", value: "" }}
-            onValueChange={clicks}
+            onValueChange={changePeriod}
             style={picker_style}
             items={[
               { label: "2020/12/07", value: "2020/12/07" },
@@ -174,7 +196,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
-    backgroundColor: "#90CECC"
   },
   button_month: {
     width: 100,
@@ -183,14 +204,12 @@ const styles = StyleSheet.create({
     borderRightColor: "#FFF",
     borderLeftWidth: 2,
     borderLeftColor: "#FFF",
-    backgroundColor: "#90CECC"
   },
   button_year: {
     width: 100,
     height: 40,
     borderBottomRightRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: "#90CECC"
   },
   button_text: {
     width: 100,
