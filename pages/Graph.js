@@ -6,11 +6,34 @@ import { CigarettesNumContext } from "../App";
 import { LineChart } from "react-native-chart-kit";
 import RNPickerSelect from "react-native-picker-select";
 
-const Graph = ({ navigation }) => {
-  const [tasks, setTasks] = useState([]);
-  // const { state, dispatch } = useContext(CigarettesNumContext);
+import { getDailyColumn } from "../api/daily";
 
-  useEffect(() => {}, []);
+const Graph = ({ navigation }) => {
+  // const { state, dispatch } = useContext(CigarettesNumContext);
+  const [currentDate, setCurrentDate] = useState("2020-01-01");
+  const [viewLabel, setViewLabel] = useState([]);
+  const [viewItem, setViewItem] = useState([]);
+
+  useEffect(() => {
+    let current_date = new Date();
+    let year = current_date.getFullYear();
+    let month = current_date.getMonth() + 1;
+    let day = current_date.getDate();
+    current_date = year + "-" + month + "-" + day;
+    setCurrentDate(current_date);
+
+    const DBProcess = async () => {
+      const data = await getDailyColumn(current_date, "month");
+      const labels = data.map(item => item.date);
+      setViewLabel(labels);
+      const items = data.map(item => item.count);
+      setViewItem(items);
+    };
+    DBProcess();
+
+  }, []);
+
+  useEffect(() => {console.log(viewLabel);}, [viewLabel]);
 
   const getData = async () => {};
 
@@ -72,9 +95,11 @@ const Graph = ({ navigation }) => {
         <View style={styles.graph_wrapper}>
           <LineChart
             data={{
-              labels: ["1", "2", "3"],
+              // labels: ["1", "2", "3"],
+              labels: viewLabel,
                 datasets: [{
-                  data: [1, 4, 3]
+                  // data: [1, 4, 3]
+                  data: viewItem
                 }]
             }}
             width={300}
@@ -111,7 +136,6 @@ const picker_style = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 10,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -130,6 +154,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ededed",
     borderBottomWidth: 1,
+    backgroundColor: "#90CECC",
     justifyContent: "flex-end"
   },
   header_text: {
@@ -138,6 +163,7 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 20,
     textAlign: "center",
+    color: "#FFFFFF",
   },
   button_wrapper: {
     flexDirection: "row",
@@ -148,7 +174,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
-    backgroundColor: "gray",
+    backgroundColor: "#90CECC"
   },
   button_month: {
     width: 100,
@@ -157,14 +183,14 @@ const styles = StyleSheet.create({
     borderRightColor: "#FFF",
     borderLeftWidth: 2,
     borderLeftColor: "#FFF",
-    backgroundColor: "gray"
+    backgroundColor: "#90CECC"
   },
   button_year: {
     width: 100,
     height: 40,
     borderBottomRightRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: "gray"
+    backgroundColor: "#90CECC"
   },
   button_text: {
     width: 100,

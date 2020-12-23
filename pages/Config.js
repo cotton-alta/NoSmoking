@@ -41,7 +41,6 @@ export {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 10,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -53,10 +52,11 @@ const styles = StyleSheet.create({
   header_wrapper: {
     width: "100%",
     height: 100,
-    borderBottomColor: "gray",
+    borderBottomColor: "#ededed",
     borderBottomWidth: 1,
     // alignItems: "flex-end"
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    backgroundColor: "#90CECC"
   },
   header_text: {
     width: "20%",
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 20,
     textAlign: "center",
+    color: "#FFFFFF",
   },
   task_wrapper: {
     width: "100%",

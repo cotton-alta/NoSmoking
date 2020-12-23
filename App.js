@@ -35,6 +35,13 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="HOME"
+      tabBarOptions={{
+        style: {
+          backgroundColor: "#90CECC",
+        },
+        inactiveTintColor: "#FFFFFF",
+        activeTintColor: "#444444"
+      }}
     >
       <Tab.Screen
         name="HOME"
@@ -56,13 +63,13 @@ const TabNavigator = () => {
 };
 
 const HomeConfig = {
-  tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
+  tabBarIcon: () => <AntDesign name="home" size={24} color="white" />,
 };
 const GraphConfig = {
-  tabBarIcon: () => <AntDesign name="areachart" size={24} color="black" />,
+  tabBarIcon: () => <AntDesign name="areachart" size={24} color="white" />,
 };
 const ConfigConfig = {
-  tabBarIcon: () => <AntDesign name="setting" size={24} color="black" />,
+  tabBarIcon: () => <AntDesign name="setting" size={24} color="white" />,
 };
 
 export default function App() {

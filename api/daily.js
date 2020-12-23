@@ -75,16 +75,18 @@ const getDailyTable = () => {
 
 // 第2引数: year, month, day
 const getDailyColumn = (data, type) => {
-  // test用
-  // let start_date = "2020-12-01";
-  // let end_date = "2020-12-20";
-
   let start_date;
   let end_date;
 
-  if(type == "day") {
-    start_date = data;
-    end_date = data;
+  switch(type) {
+    case "day":
+      start_date = data;
+      end_date = data;
+      break;
+    case "month":
+      start_date = "2020-12-01";
+      end_date = "2020-12-31";
+      break;
   }
 
   const array = new Promise((resolve, reject) => {

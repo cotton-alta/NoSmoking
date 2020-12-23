@@ -120,6 +120,10 @@ const Top = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+        <View style={styles.target_wrapper}>
+          <Text style={styles.target_headline}>今日の目標本数 : </Text>
+          <Text style={styles.target_text}>5</Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -132,7 +136,6 @@ export {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 10,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -146,8 +149,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ededed",
     borderBottomWidth: 1,
-    // alignItems: "flex-end"
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    backgroundColor: "#90CECC"
   },
   header_text: {
     width: "20%",
@@ -155,6 +158,7 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 20,
     textAlign: "center",
+    color: "#FFFFFF",
   },
   top_text: {
     width: "100%",
@@ -199,6 +203,23 @@ const styles = StyleSheet.create({
   count_img: {
     width: 50,
     height: 50,
+  },
+  target_wrapper: {
+    width: "100%",
+    height: 70,
+    marginTop: 20,
+    borderTopColor: "gray",
+    borderBottomColor: "gray",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    flexDirection: "row"
+  },
+  target_headline: {
+    lineHeight: 70
+  },
+  target_text: {
+    lineHeight: 70,
+    fontSize: 20,
   },
   task_wrapper: {
     width: "100%",
