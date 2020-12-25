@@ -21,13 +21,11 @@ const createDailyTable = () => {
 };
 
 const insertDailyColumn = (date) => {
-  let test = ["2020-12-10", 3];
-
   const result = new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
         `insert into daily (date, count) values (?, ?)`,
-        [date, 5],
+        [date, 0],
         () => {
           console.log("success insert");
           resolve(true);
@@ -78,6 +76,7 @@ const getDailyColumn = (date, type) => {
   let date_array = date.split("-");
   let start_date;
   let end_date;
+  let date_obj = new Date(date_array[0], Number(date_array[1]) - 1, date_array[2]);
 
   switch(type) {
     case "day":
@@ -88,9 +87,25 @@ const getDailyColumn = (date, type) => {
       start_date = date_array[0] + "-01-01";
       end_date = date_array[0] + "-12-31";
       break;
-    case "year":
-      start_date = "2000-01-01";
-      end_date = date;
+    case "week":
+      let first_date = new Date(date_array[0], Number(date_array[1] - 1), 1);
+      let first_date_week = first_date.getDay();
+      first_date.setDate(first_date.getDate() - first_date_week);
+      let first_year = first_date.getFullYear();
+      let first_month = first_date.getMonth() + 1;
+      let first_day = first_date.getDate();
+
+      start_date = first_year + "-" + ("00" + first_month).slice(-2) + "-" + ("00" + first_day).slice(-2);
+
+      let last_day = new Date(parseInt(date_array[0], 10), parseInt(date_array[1], 10), 0).getDate();
+      let last_date = new Date(date_array[0], Number(date_array[1] - 1), last_day);
+      let last_date_week = last_date.getDay();
+      last_date.setDate(last_date.getDate() + 6 - last_date_week);
+      let last_year = last_date.getFullYear();
+      let last_month = last_date.getMonth() + 1;
+      last_day = last_date.getDate();
+
+      end_date = last_year + "-" + ("00" + last_month).slice(-2) + "-" + ("00" + last_day).slice(-2);
   }
 
   const array = new Promise((resolve, reject) => {
@@ -104,6 +119,14 @@ const getDailyColumn = (date, type) => {
           console.log("get column success");
           switch(type) {
             case "day":
+              // rows_array.forEach(row => {
+              //   const row_date = row.date.split("-");
+              //   // switch(row_date)
+              // });
+              // result_array = rows_array.map(row => {
+              //   let date = ("00" + row.date.split("-")[1]).slice(-2) + "/" + ("00" + (row.date.split("-")[2])).slice(-2);
+              //   return {date: date, count: row.count};
+              // });
               resolve(rows_array);
               break;
             case "month":
@@ -111,7 +134,7 @@ const getDailyColumn = (date, type) => {
               const end = 12;
               const months = [...Array(end - start + 1).keys()].map(e => ("00" + (e + start)).slice(-2));
               let result_array = months.map(month => {
-                return {date: month, count: 0};
+                return { date: month, count: 0 };
               });
               rows_array.forEach(row => {
                 const row_date = row.date.split("-");
@@ -124,8 +147,61 @@ const getDailyColumn = (date, type) => {
               });
               resolve(result_array);
               break;
-            case "year":
-              resolve(rows_array);
+            case "week":
+              const weeks = ["第1週", "第2週", "第3週", "第4週", "第5週"];
+              result_array = weeks.map(week => {
+                return { date: week, count: 0 };
+              });
+
+              let first_date = new Date(date_array[0], Number(date_array[1] - 1), 1);
+              let first_date_week = first_date.getDay();
+              first_date.setDate(first_date.getDate() - first_date_week);
+              let first_year = first_date.getFullYear();
+              let first_month = first_date.getMonth() + 1;
+              let first_day = first_date.getDate();
+
+              let previous_last_day = new Date(parseInt(date_array[0], 10), parseInt(Number(date_array[1]) - 1, 10), 0).getDate();
+              let current_last_day = new Date(parseInt(date_array[0], 10), parseInt(Number(date_array[1]), 10), 0).getDate();
+              let year = first_year;
+              let month = first_month;
+              let day = first_day;
+              let time_count = 0;
+              for(let i = 0; i < 35; i++) {
+                rows_array.forEach(row => {
+                  let row_date = row.date.split("-").map(a => Number(a));
+                  if(month == row_date[1] && day == row_date[2]) {
+                    let week_name;
+                    if(time_count < 7) {
+                      week_name = "第1週";
+                    } else if(time_count < 14) {
+                      week_name = "第2週";
+                    } else if(time_count < 21) {
+                      week_name = "第3週";
+                    } else if(time_count < 28) {
+                      week_name = "第4週";
+                    } else {
+                      week_name = "第5週";
+                    }
+                    result_array.forEach(week => {
+                      if(week.date == week_name) week.count += row.count;
+                    });
+                  }
+                });
+                day++;
+                if(month == first_month && day > previous_last_day) {
+                  month++;
+                  day = 1;
+                } else if(month > first_month && day > current_last_day) {
+                  month++;
+                  day = 1;
+                }
+                if(month > 12) {
+                  month = 1;
+                }
+                time_count++;
+              }
+
+              resolve(result_array);
               break;
           }
         },

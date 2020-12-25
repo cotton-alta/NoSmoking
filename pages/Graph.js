@@ -85,6 +85,18 @@ const Graph = ({ navigation }) => {
           </View>
           <View
             style={[
+              styles.button_week,
+              buttonColor("week")
+            ]}
+            onClick={() => {
+              changeType("week");
+              getData(currentDate, "week");
+            }}
+          >
+            <Text style={styles.button_text}>week</Text>
+          </View>
+          <View
+            style={[
               styles.button_month,
               buttonColor("month")
             ]}
@@ -94,18 +106,6 @@ const Graph = ({ navigation }) => {
             }}
           >
             <Text style={styles.button_text}>month</Text>
-          </View>
-          <View
-            style={[
-              styles.button_year,
-              buttonColor("year")
-            ]}
-            onClick={() => {
-              changeType("year");
-              getData(currentDate, "year");
-            }}
-          >
-            <Text style={styles.button_text}>year</Text>
           </View>
         </View>
         <View style={styles.picker_wrapper}>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,
   },
-  button_month: {
+  button_week: {
     width: 100,
     height: 40,
     borderRightWidth: 2,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     borderLeftColor: "#FFF",
   },
-  button_year: {
+  button_month: {
     width: 100,
     height: 40,
     borderBottomRightRadius: 15,

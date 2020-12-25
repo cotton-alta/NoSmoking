@@ -33,11 +33,16 @@ const Top = ({ navigation }) => {
       const date = await getDailyColumn(current_date, "day");
 
       console.log(date.length);
-      if(date.length == 0) {
-        return true;
-      } else {
-        return false;
-      }
+      let judge = true;
+      date.forEach(item => {
+        if(item.date == current_date) judge = false;
+      });
+      // if(date.length == 0) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
+      return judge;
     };
 
     const dbInit = async () => {
@@ -53,9 +58,11 @@ const Top = ({ navigation }) => {
         payload: true
       });
 
-      const data = await getDailyColumn(current_date, "day");
-      console.log(currentDate);
-      setNumCigarettes(data[0].count);
+      const datas = await getDailyColumn(current_date, "day");
+      console.log(datas);
+      datas.forEach(data => {
+        if(data.date == current_date) setNumCigarettes(data.count);
+      });
     };
     dbInit();
 
