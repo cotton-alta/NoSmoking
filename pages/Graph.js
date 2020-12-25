@@ -23,22 +23,19 @@ const Graph = ({ navigation }) => {
     current_date = year + "-" + month + "-" + day;
     setCurrentDate(current_date);
 
-    const DBProcess = async () => {
-      const data = await getDailyColumn(current_date, "month");
-      const labels = data.map(item => item.date);
-      setViewLabel(labels);
-      const items = data.map(item => item.count);
-      setViewItem(items);
-    };
-    DBProcess();
+    getData(current_date, "month");
 
   }, []);
 
   useEffect(() => {console.log(viewLabel);}, [viewLabel]);
 
-  const getData = async () => {};
-
-  const deleteTask = async (id) => {};
+  const getData = async (date, type) => {
+    const datas = await getDailyColumn(date, type);
+    const labels = datas.map(data => data.date);
+    setViewLabel(labels);
+    const items = datas.map(data => data.count);
+    setViewItem(items);
+  };
 
   const changePeriod = () => {
 
@@ -79,7 +76,10 @@ const Graph = ({ navigation }) => {
               styles.button_day,
               buttonColor("day")
             ]}
-            onClick={() => changeType("day")}
+            onClick={() => {
+              changeType("day");
+              getData(currentDate, "day");
+            }}
           >
             <Text style={styles.button_text}>day</Text>
           </View>
@@ -88,7 +88,10 @@ const Graph = ({ navigation }) => {
               styles.button_month,
               buttonColor("month")
             ]}
-            onClick={() => changeType("month")}
+            onClick={() => {
+              changeType("month");
+              getData(currentDate, "month");
+            }}
           >
             <Text style={styles.button_text}>month</Text>
           </View>
@@ -97,7 +100,10 @@ const Graph = ({ navigation }) => {
               styles.button_year,
               buttonColor("year")
             ]}
-            onClick={() => changeType("year")}
+            onClick={() => {
+              changeType("year");
+              getData(currentDate, "year");
+            }}
           >
             <Text style={styles.button_text}>year</Text>
           </View>

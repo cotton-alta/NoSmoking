@@ -74,19 +74,23 @@ const getDailyTable = () => {
 };
 
 // 第2引数: year, month, day
-const getDailyColumn = (data, type) => {
+const getDailyColumn = (date, type) => {
+  let date_array = date.split("-");
   let start_date;
   let end_date;
 
   switch(type) {
     case "day":
-      start_date = data;
-      end_date = data;
+      start_date = date_array[0] + "-" + date_array[1] + "-01";
+      end_date = date_array[0] + "-" + date_array[1] + "-31";
       break;
     case "month":
-      start_date = "2020-12-01";
-      end_date = "2020-12-31";
+      start_date = date_array[0] + "-01-01";
+      end_date = date_array[0] + "-12-31";
       break;
+    case "year":
+      start_date = "2000-01-01";
+      end_date = date;
   }
 
   const array = new Promise((resolve, reject) => {
@@ -98,7 +102,32 @@ const getDailyColumn = (data, type) => {
           const rows_len = [...Array(rows.length).keys()];
           const rows_array = rows_len.map(i => rows.item(i));
           console.log("get column success");
-          resolve(rows_array);
+          switch(type) {
+            case "day":
+              resolve(rows_array);
+              break;
+            case "month":
+              const start = 1;
+              const end = 12;
+              const months = [...Array(end - start + 1).keys()].map(e => ("00" + (e + start)).slice(-2));
+              let result_array = months.map(month => {
+                return {date: month, count: 0};
+              });
+              rows_array.forEach(row => {
+                const row_date = row.date.split("-");
+                for(let i = 0; i < result_array.length; i++) {
+                  if(result_array[i].date == row_date[1]) {
+                    result_array[i].count += Number(row.count);
+                    break;
+                  }
+                }
+              });
+              resolve(result_array);
+              break;
+            case "year":
+              resolve(rows_array);
+              break;
+          }
         },
         () => {console.log("get column fail");}
       );
