@@ -101,7 +101,6 @@ const getDailyColumn = (date, type) => {
     let date_obj = new Date(start_date_array[0], Number(start_date_array[1]) - 1, start_date_array[2]);
     date_obj.setDate(date_obj.getDate() + 6);
     end_date = date_obj.getFullYear() + "-" + ("00" + (date_obj.getMonth() + 1)).slice(-2) + "-" + ("00" + date_obj.getDate()).slice(-2);
-    console.log(date);
     break;
   case "month":
     start_date = date_array[0] + "-01-01";

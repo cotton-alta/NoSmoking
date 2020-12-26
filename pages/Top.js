@@ -30,27 +30,24 @@ const Top = ({ navigation }) => {
     setCurrentDate(current_date);
 
     const checkDateInit = async () => {
-      const date = await getDailyColumn(current_date, "day");
+      const datas = await getDailyColumn(current_date, "day");
 
-      console.log(date.length);
-      let judge = true;
-      date.forEach(item => {
-        if(item.date == current_date) judge = false;
+      console.log(datas.length);
+      let judge = false;
+      datas.forEach(data => {
+        if(data.date == ("00" + month).slice(-2) + "/" + ("00" + day).slice(-2)) judge = true;
       });
-      // if(date.length == 0) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
       return judge;
     };
 
     const dbInit = async () => {
+      // DB初期化
       // await deleteDailyTable();
+
       await createDailyTable();
       let date_exist = await checkDateInit();
 
-      if(date_exist == true) {
+      if(date_exist == false) {
         await insertDailyColumn(current_date);
       }
       DBLoadDispatch({
@@ -59,9 +56,10 @@ const Top = ({ navigation }) => {
       });
 
       const datas = await getDailyColumn(current_date, "day");
-      console.log(datas);
       datas.forEach(data => {
-        if(data.date == current_date) setNumCigarettes(data.count);
+        if(data.date == ("00" + month).slice(-2) + "/" + ("00" + day).slice(-2)) {
+          setNumCigarettes(data.count);
+        }
       });
     };
     dbInit();
