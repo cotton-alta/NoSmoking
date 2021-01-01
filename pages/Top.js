@@ -8,9 +8,9 @@ import {
   createDailyTable,
   deleteDailyTable,
   getDailyTable,
-  insertDailyColumn,
-  updateDailyColumn,
-  getDailyColumn
+  insertDailyRecord,
+  updateDailyRecord,
+  getDailyRecord
 } from "../api/daily";
 
 import { DBLoadContext } from "../App";
@@ -24,18 +24,18 @@ const Top = ({ navigation }) => {
   useEffect(() => {
     let current_date = new Date();
     let year = current_date.getFullYear();
-    let month = current_date.getMonth() + 1;
-    let day = current_date.getDate();
+    let month = ("00" + current_date.getMonth() + 1).slice(-2);
+    let day = ("00" + current_date.getDate()).slice(-2);
     current_date = year + "-" + month + "-" + day;
     setCurrentDate(current_date);
 
     const checkDateInit = async () => {
-      const datas = await getDailyColumn(current_date, "day");
+      const datas = await getDailyRecord(current_date, "day");
 
-      console.log(datas.length);
+      console.log("datas: ", datas);
       let judge = false;
       datas.forEach(data => {
-        if(data.date == ("00" + month).slice(-2) + "/" + ("00" + day).slice(-2)) judge = true;
+        if(data.date == current_date) judge = true;
       });
       return judge;
     };
@@ -48,16 +48,16 @@ const Top = ({ navigation }) => {
       let date_exist = await checkDateInit();
 
       if(date_exist == false) {
-        await insertDailyColumn(current_date);
+        await insertDailyRecord(current_date);
       }
       DBLoadDispatch({
         type: "checkLoad",
         payload: true
       });
 
-      const datas = await getDailyColumn(current_date, "day");
+      const datas = await getDailyRecord(current_date, "day");
       datas.forEach(data => {
-        if(data.date == ("00" + month).slice(-2) + "/" + ("00" + day).slice(-2)) {
+        if(data.date == current_date) {
           setNumCigarettes(data.count);
         }
       });
@@ -87,13 +87,13 @@ const Top = ({ navigation }) => {
 
   const countUp = () => {
     setNumCigarettes(numCigarettes + 1);
-    updateDailyColumn(currentDate, numCigarettes + 1);
+    updateDailyRecord(currentDate, numCigarettes + 1);
   };
 
   const countDown = () => {
     if(Number(numCigarettes) > 0) {
       setNumCigarettes(numCigarettes - 1);
-      updateDailyColumn(currentDate, numCigarettes - 1);
+      updateDailyRecord(currentDate, numCigarettes - 1);
     }
   };
 

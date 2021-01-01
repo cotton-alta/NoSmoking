@@ -30,10 +30,93 @@ const Graph = ({ navigation }) => {
   useEffect(() => {console.log(viewLabel);}, [viewLabel]);
 
   const getData = async (date, type) => {
-    const datas = await getDailyColumn(date, type);
-    const labels = datas.map(data => data.date);
+    const datas = await getDailyRecord(date, type);
+    let result_array;
+
+    switch(type) {
+    case "month":
+      const start = 1;
+      const end = 12;
+      const months = [...Array(end - start + 1).keys()].map(e => ("00" + (e + start)).slice(-2));
+
+      result_array = months.map(month => {
+        return { date: month, count: 0 };
+      });
+
+      datas.forEach(row => {
+        const row_date = row.date.split("-");
+        for(let i = 0; i < result_array.length; i++) {
+          if(result_array[i].date == row_date[1]) {
+            result_array[i].count += Number(row.count);
+            break;
+          }
+        }
+      });
+      break;
+    case "week":
+      let date_array = date.split("-");
+      const weeks = ["第1週", "第2週", "第3週", "第4週", "第5週"];
+      result_array = weeks.map(week => {
+        return { date: week, count: 0 };
+      });
+      let first_date = `${date_array[0]}-${date_array[1]}-01`;
+      first_date = first_date.split("-");
+      let first_year = Number(first_date[0]);
+      let first_month = Number(first_date[1]);
+      let first_day = Number(first_date[2]);
+      let previous_last_day = new Date(parseInt(date_array[0], 10), parseInt(Number(date_array[1]) - 1, 10), 0).getDate();
+      let current_last_day = new Date(parseInt(date_array[0], 10), parseInt(Number(date_array[1]), 10), 0).getDate();
+      let year = first_year;
+      let month = first_month;
+      let day = first_day;
+      let time_count = 0;
+      for(let i = 0; i < 35; i++) {
+        datas.forEach(row => {
+          let row_date = row.date.split("-").map(a => Number(a));
+          if(month == row_date[1] && day == row_date[2]) {
+            let week_name;
+            if(time_count < 7) {
+              week_name = "第1週";
+            } else if(time_count < 14) {
+              week_name = "第2週";
+            } else if(time_count < 21) {
+              week_name = "第3週";
+            } else if(time_count < 28) {
+              week_name = "第4週";
+            } else {
+              week_name = "第5週";
+            }
+            result_array.forEach(week => {
+              if(week.date == week_name) week.count += row.count;
+            });
+          }
+        });
+        day++;
+        if(month == first_month && day > previous_last_day) {
+          month++;
+          day = 1;
+        } else if(month > first_month && day > current_last_day) {
+          month++;
+          day = 1;
+        }
+        if(month > 12) {
+          year++;
+          month = 1;
+        }
+        time_count++;
+      }
+      break;
+    case "day":
+      result_array = datas.map(row => {
+        const row_date = row.date.split("-");
+        return { date: `${row_date[1]}/${row_date[2]}`, count: row.count };
+      });
+      break;
+    }
+
+    const labels = result_array.map(data => data.date);
     setViewLabel(labels);
-    const items = datas.map(data => data.count);
+    const items = result_array.map(data => data.count);
     setViewItem(items);
   };
 
