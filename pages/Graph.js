@@ -6,7 +6,7 @@ import { CigarettesNumContext } from "../App";
 import { LineChart } from "react-native-chart-kit";
 import RNPickerSelect from "react-native-picker-select";
 
-import { getDailyColumn } from "../api/daily";
+import { getDailyRecord } from "../api/daily";
 
 const Graph = ({ navigation }) => {
   // const { state, dispatch } = useContext(CigarettesNumContext);

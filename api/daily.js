@@ -20,7 +20,7 @@ const createDailyTable = () => {
   return result;
 };
 
-const insertDailyColumn = (date) => {
+const insertDailyRecord = (date) => {
   const result = new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -37,7 +37,7 @@ const insertDailyColumn = (date) => {
   return result;
 };
 
-const updateDailyColumn = (date, count) => {
+const updateDailyRecord = (date, count) => {
   const result = new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -88,8 +88,8 @@ const getBeginningWeek = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-// 第2引数: year, month, day
-const getDailyColumn = (date, type) => {
+// 第2引数: week, month, day
+const getDailyRecord = (date, type) => {
   let date_array = date.split("-");
   let start_date;
   let end_date;
@@ -243,9 +243,9 @@ const deleteDailyTable = () => {
 
 export {
   createDailyTable,
-  insertDailyColumn,
-  updateDailyColumn,
+  insertDailyRecord,
+  updateDailyRecord,
   getDailyTable,
-  getDailyColumn,
+  getDailyRecord,
   deleteDailyTable
 }
