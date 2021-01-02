@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Image, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 const ConfigCard = (props) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity style={[styles.card_wrapper, props.layout]}>
+    <TouchableOpacity
+      style={[styles.card_wrapper, props.layout]}
+      onPress={() => navigation.navigate("SETTING_NUM")}
+    >
       <Text style={styles.card_text}>{props.title}</Text>
       <Image
         source={require("../assets/right.png")}

@@ -19,12 +19,18 @@ const Tab = createBottomTabNavigator();
 
 const DBLoadContext = React.createContext(false);
 
-const StackNavigator = () => {
+const ConfigStack = () => {
+  // <Stack.Navigator initialRouteName="HOME">
   return (
-    <Stack.Navigator initialRouteName="TabNavigator">
+    <Stack.Navigator>
       <Stack.Screen
         name="HOME"
-        component={ Top }
+        component={ Config }
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SETTING_NUM"
+        component={ Config }
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -34,7 +40,6 @@ const StackNavigator = () => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="HOME"
       tabBarOptions={{
         style: {
           backgroundColor: "#90CECC",
@@ -55,7 +60,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="CONFIG"
-        component={ Config }
+        component={ ConfigStack }
         options={ConfigConfig}
       />
     </Tab.Navigator>

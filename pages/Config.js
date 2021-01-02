@@ -20,11 +20,10 @@ const Config = ({ navigation }) => {
   };
 
   const sections = {
-    headline: "settings",
+    headline: "銘柄",
     content: [
-      { title: "setting1", to: "setting1" },
-      { title: "setting2", to: "setting2" },
-      { title: "setting3", to: "setting3" },
+      { title: "1箱あたりの本数", to: "SETTING_NUM" },
+      { title: "1箱あたりの価格", to: "SETTING_PRICE" },
     ]
   };
 
