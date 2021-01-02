@@ -154,42 +154,42 @@ const Graph = ({ navigation }) => {
         contentContainerStyle={styles.scroll_container}
       >
         <View style={styles.button_wrapper}>
-          <View
+          <TouchableOpacity
             style={[
               styles.button_day,
               buttonColor("day")
             ]}
-            onClick={() => {
+            onPress={() => {
               changeType("day");
               getData(currentDate, "day");
             }}
           >
             <Text style={styles.button_text}>day</Text>
-          </View>
-          <View
+          </TouchableOpacity>
+          <TouchableOpacity
             style={[
               styles.button_week,
               buttonColor("week")
             ]}
-            onClick={() => {
+            onPress={() => {
               changeType("week");
               getData(currentDate, "week");
             }}
           >
             <Text style={styles.button_text}>week</Text>
-          </View>
-          <View
+          </TouchableOpacity>
+          <TouchableOpacity
             style={[
               styles.button_month,
               buttonColor("month")
             ]}
-            onClick={() => {
+            onPress={() => {
               changeType("month");
               getData(currentDate, "month");
             }}
           >
             <Text style={styles.button_text}>month</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.picker_wrapper}>
           <RNPickerSelect

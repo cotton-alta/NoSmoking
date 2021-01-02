@@ -25,10 +25,41 @@ const Config = ({ navigation }) => {
     );
   };
 
+  const ConfigCard = (props) => {
+    return (
+      <TouchableOpacity>
+        <Text>{props.title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const ConfigSection = (props) => {
+    const section_len = props.sections.content.length;
+    return (
+      <View>
+      {props.sections.content.map(card => {
+        return (
+          <ConfigCard key={card.title} title={card.title} to={card.to} />
+        )
+      })}
+      </View>
+    );
+  };
+
+  const sections = {
+    headline: "settings",
+    content: [
+      { title: "setting1", to: "setting1" },
+      { title: "setting2", to: "setting2" },
+      { title: "setting3", to: "setting3" },
+    ]
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView style={styles.scroll_container}>
+        <ConfigSection sections={sections} />
       </ScrollView>
     </View>
   );

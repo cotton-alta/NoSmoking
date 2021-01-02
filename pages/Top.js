@@ -42,7 +42,7 @@ const Top = ({ navigation }) => {
 
     const dbInit = async () => {
       // DB初期化
-      // await deleteDailyTable();
+      await deleteDailyTable();
 
       await createDailyTable();
       let date_exist = await checkDateInit();
