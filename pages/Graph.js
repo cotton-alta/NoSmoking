@@ -206,22 +206,23 @@ const Graph = ({ navigation }) => {
         <View style={styles.graph_wrapper}>
           <LineChart
             data={{
-              // labels: ["1", "2", "3"],
               labels: viewLabel,
                 datasets: [{
-                  // data: [1, 4, 3]
-                  data: viewItem
+                  data: viewItem,
+                  color: (opacity = 0.5) => "#90CECC",
                 }]
             }}
             width={300}
             height={300}
-            yAxisLabel={"本"}
+            formatYLabel={(label) => {return parseInt(label)}}
             chartConfig={{
-              backgroundColor: "#FFF",
-              backgroundGradientFrom: "#FFF",
-              backgroundGradientTo: "#FFF",
-              color: (opacity = 0.5) => `rgba(0, 0, 0, 0.5)`,
+              backgroundColor: "#FFFFFF",
+              backgroundGradientFrom: "#FFFFFF",
+              backgroundGradientTo: "#FFFFFF",
+              color: (opacity = 0.5) => "#888888",
             }}
+            fromZero={true}
+            withInnerLines={false}
           />
         </View>
       </ScrollView>
