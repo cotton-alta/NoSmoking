@@ -3,16 +3,10 @@ import { ScrollView, Image, TextInput, StyleSheet, Text, View, Button, Touchable
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { CigarettesNumContext } from "../App";
+import { ConfigSection } from "../components/Section";
 
 const Config = ({ navigation }) => {
-  const [tasks, setTasks] = useState([]);
   // const { state, dispatch } = useContext(CigarettesNumContext);
-
-  useEffect(() => {}, []);
-
-  const getData = async () => {};
-
-  const deleteTask = async (id) => {};
 
   const Header = () => {
     return (
@@ -25,27 +19,6 @@ const Config = ({ navigation }) => {
     );
   };
 
-  const ConfigCard = (props) => {
-    return (
-      <TouchableOpacity>
-        <Text>{props.title}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const ConfigSection = (props) => {
-    const section_len = props.sections.content.length;
-    return (
-      <View>
-      {props.sections.content.map(card => {
-        return (
-          <ConfigCard key={card.title} title={card.title} to={card.to} />
-        )
-      })}
-      </View>
-    );
-  };
-
   const sections = {
     headline: "settings",
     content: [
@@ -55,11 +28,15 @@ const Config = ({ navigation }) => {
     ]
   };
 
+  const style = {
+    marginTop: 20
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView style={styles.scroll_container}>
-        <ConfigSection sections={sections} />
+        <ConfigSection styles={style} sections={sections} />
       </ScrollView>
     </View>
   );
@@ -85,7 +62,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ededed",
     borderBottomWidth: 1,
-    // alignItems: "flex-end"
     justifyContent: "flex-end",
     backgroundColor: "#90CECC"
   },
@@ -104,10 +80,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  task_text: {
-    fontSize: 20,
-    lineHeight: 60,
   },
   check_wrapper: {
     height: 58,
